@@ -23,6 +23,8 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="EchoSharp" Version="0.1.0" />
+        <PackageReference Include="EchoSharp.NAudio" Version="0.1.0" />
         <PackageReference Include="EchoSharp.Whisper.net" Version="0.1.0" />
     </ItemGroup>
 </Project>

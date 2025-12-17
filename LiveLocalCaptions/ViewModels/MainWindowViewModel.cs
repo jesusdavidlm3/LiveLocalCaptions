@@ -1,4 +1,5 @@
 ﻿using LiveLocalCaptions.Classes;
+using EchoSharp.NAudio;
 
 namespace LiveLocalCaptions.ViewModels;
 
@@ -47,6 +48,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
+            // var audioSource = new Outpu
         }
         else
         {
