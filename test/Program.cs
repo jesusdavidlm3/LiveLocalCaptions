@@ -23,31 +23,32 @@ int segmentDurationSeconds = 5;
 int segmentSize = bytesPerSecond * segmentDurationSeconds;
 
 //Ajustes de formato
-var waveFormat = new WaveFormat(48000, 16, 2 );
+var waveFormat = new WaveFormat(48000, 24, 2 );
 var writer = new WaveFileWriter("test.wav", waveFormat);
-var targetFormat = new WaveFormat(16000, 16, 1);
-var bufferedWaveProvicer = new BufferedWaveProvider(capture.WaveFormat);
-var resampler = new MediaFoundationResampler(bufferedWaveProvicer, targetFormat)
-{
-    ResamplerQuality = 60
-};
+// var targetFormat = new WaveFormat(16000, 16, 1);
+// var bufferedWaveProvicer = new BufferedWaveProvider(capture.WaveFormat);
+// var resampler = new MediaFoundationResampler(bufferedWaveProvicer, targetFormat)
+// {
+//     ResamplerQuality = 60
+// };
 capture.WaveFormat = waveFormat; 
 
 //Operaciones a realizar durante la captura
 capture.DataAvailable += async (s, e) =>
 {
-    bufferStream.Write(e.Buffer, 0, e.BytesRecorded);
-    if (bufferStream.Length >= segmentSize)
-    {
+    // bufferStream.Write(e.Buffer, 0, e.BytesRecorded);
+    // if (bufferStream.Length >= segmentSize)
+    // {
         //Procesador de audio capturado
-        var audioBytes =  bufferStream.ToArray();
-        bufferStream.SetLength(0);
-        float[] samples = new float[audioBytes.Length / 2];
-        for (int i = 0; i < samples.Length; i++)
-        {
-            short sample = BitConverter.ToInt16(audioBytes, i * 2);
-            samples[i] = sample / 32768f;
-        }
+        // var audioBytes =  bufferStream.ToArray();
+        // bufferStream.SetLength(0);
+        // float[] samples = new float[audioBytes.Length / 2];
+        // for (int i = 0; i < samples.Length; i++)
+        // {
+        //     short sample = BitConverter.ToInt16(audioBytes, i * 2);
+        //     samples[i] = sample / 32768f;
+        //     writer.Write(e.Buffer, 0, e.BytesRecorded);
+        // }
 
         //Modelo de transcripcion
         // try
@@ -62,12 +63,17 @@ capture.DataAvailable += async (s, e) =>
         // }
         
         //Guardado de audio en archivo
-        writer.Write(e.Buffer, 0, e.BytesRecorded);
-    }
+        // writer.Write(e.Buffer, 0, e.BytesRecorded);
+    // }
+    writer.Write(e.Buffer, 0, e.BytesRecorded);
 };
 
 //Operaciones al terminar la captura
-capture.RecordingStopped += (s, e) => writer.Dispose();
+capture.RecordingStopped += (s, e) =>
+{
+    writer.Dispose();
+    writer = null;
+};
 
 //Arranque de la aplicacion
 capture.StartRecording();
