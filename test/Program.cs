@@ -1,6 +1,7 @@
 ﻿using Whisper.net;
 using Whisper.net.Ggml;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 //Configuracion del modelo de Reconocimiento
 var modelName = "ggml-base.bin";
@@ -40,33 +41,52 @@ capture.DataAvailable += async (s, e) =>
     else
     {
         //Resamplear a 16KHz, 16 bits, mono
+        byte[] chunck = new byte[segmentSize];
+        int toRead = 0;
+        while (toRead < segmentSize)
+        {
+            int r = bufferedWaveProvider.Read(chunck, toRead, segmentSize - toRead);
+            if (r == 0)
+            {
+                Thread.Sleep(5000);
+                continue;
+            }
+            toRead += r;
+        }
         
-        var resampler = new MediaFoundationResampler(bufferedWaveProvider, targetFormat);
-        resampler.ResamplerQuality = 60;
+        var ms = new MemoryStream(chunck, false);
+        var rawMemoryStream = new RawSourceWaveStream(ms, sourceFormat);
+        var sampleProvider = rawMemoryStream.ToSampleProvider();
+
+        var stereoToMono = new StereoToMonoSampleProvider(sampleProvider);
         
-        // var audioBytes =  bufferedWaveProvicer;
-        // bufferStream.SetLength(0);
-        // float[] samples = new float[bufferedWaveProvicer.BufferedBytes];
-        // for (int i = 0; i < samples.Length; i++)
-        // {
-        //     short sample = BitConverter.ToInt16(audioBytes, i * 2);
-        //     samples[i] = sample / 32768f;
-        // }
+        var resampler = new WdlResamplingSampleProvider(stereoToMono, 16000);
+        // var waveProvider16 = new SampleToWaveProvider16(resampler);
+        using var msOut = new MemoryStream();
+        List<float> samples = new List<float>();
+        float[] buffer = new float[resampler.WaveFormat.AverageBytesPerSecond * 10];
+        int read;
+        while ((read = resampler.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            for (int i = 0; i < read; i++)
+            {
+                samples.Add(buffer[i]);
+            }
+        }
+        // var processedAudio = msOut.ToArray();
 
         //Modelo de transcripcion
         try
         {
-            // await foreach (var result in processor.ProcessAsync(samples)) 
-            // {
-            //     Console.WriteLine($"{result.Start}->{result.End}: {result.Text}");
-            // }            
+            await foreach (var result in processor.ProcessAsync(samples.ToArray())) 
+            {
+                Console.WriteLine($"{result.Start}->{result.End}: {result.Text}");
+            }            
         }catch(Exception ex)
         {
             Console.WriteLine($"No hay audio para Capturar");
         }
     }
-    //Guardado de audio en archivo
-    // writer.Write(e.Buffer, 0, e.BytesRecorded);   no se donde va esto...
 };
 
 //Operaciones al terminar la captura
