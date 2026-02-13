@@ -1,23 +1,26 @@
-﻿using LiveLocalCaptions.Classes;
+﻿using System.Threading;
+using Avalonia.Controls;
+using LiveLocalCaptions.Classes;
 using EchoSharp.NAudio;
+using LiveLocalCaptions.Views;
 
 namespace LiveLocalCaptions.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting
+    public string CurrentText
     {
-        get => _Greeting;
+        get => _CurrentText;
         set
         {
-            if (_Greeting != value)
+            if (_CurrentText != value)
             {
-                _Greeting = value;                
+                _CurrentText = value;                
                 OnPropertyChanged();
             }
         }
     } 
-    private string _Greeting { get; set; } = "Live Captions will appear here";
+    private string _CurrentText { get; set; } = "Live Captions will appear here";
 
     public string StatusButton
     {
@@ -34,11 +37,17 @@ public partial class MainWindowViewModel : ViewModelBase
     private string _StatusButton { get; set; } = "Start";
     
     public RelayCommand StartCommand { get; }
+    public RelayCommand HistoryWindowCommand { get; }
 
     public MainWindowViewModel()
     {
         StartCommand = new RelayCommand(
             execute: _ => Start(),
+            canExecute: _ => true
+        );
+
+        HistoryWindowCommand = new RelayCommand(
+            execute: _ => OpenHistoryWindow(),
             canExecute: _ => true
         );
     }
@@ -48,11 +57,18 @@ public partial class MainWindowViewModel : ViewModelBase
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
-            // var audioSource = new Outpu
+            var transcriptionProvider = new TranscriptionProvider();
+            transcriptionProvider.Transcript(newText => CurrentText = newText);
         }
         else
         {
             StatusButton = "Start";
         }
+    }
+
+    public void OpenHistoryWindow()
+    {
+        var window = new HistoryView();
+        window.Show();
     }
 }

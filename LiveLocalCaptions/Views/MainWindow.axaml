@@ -13,19 +13,25 @@
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock
-                Text="{Binding Greeting}"
+                Text="{Binding CurrentText}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Margin="60"
                 FontFamily="Berlin Sans FB Demi"/>
-        <Button
-            HorizontalAlignment="Center"
-            Content="{Binding StatusButton}"
-            Command="{Binding StartCommand}"/>
+        <WrapPanel ItemsAlignment="Center" ItemSpacing="30">
+            <Button
+                HorizontalAlignment="Center"
+                Content="{Binding StatusButton}"
+                Command="{Binding StartCommand}"/>
+            <Button
+                HorizontalAlignment="Center"
+                Content="History"
+                Command="{Binding HistoryWindowCommand}"/>
+        </WrapPanel>
     </StackPanel>
 </Window>

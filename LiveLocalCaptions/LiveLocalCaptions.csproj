@@ -26,5 +26,7 @@
         <PackageReference Include="EchoSharp" Version="0.1.0" />
         <PackageReference Include="EchoSharp.NAudio" Version="0.1.0" />
         <PackageReference Include="EchoSharp.Whisper.net" Version="0.1.0" />
+        <PackageReference Include="Whisper.net" Version="1.9.0" />
+        <PackageReference Include="Whisper.net.Runtime" Version="1.9.0" />
     </ItemGroup>
 </Project>

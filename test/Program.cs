@@ -20,7 +20,7 @@ using var processor = whisperFactory.CreateBuilder()
 using var capture = new WasapiLoopbackCapture();
 var bufferStream = new MemoryStream();
 int bytesPerSecond = 48000 * 2 * 2;     //samples por segundo, profundidad en bytes, canales
-int segmentDurationSeconds = 5;
+int segmentDurationSeconds = 2;
 int segmentSize = bytesPerSecond * segmentDurationSeconds;
 
 //Ajustes de formato
