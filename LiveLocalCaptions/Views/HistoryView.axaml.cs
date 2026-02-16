@@ -9,10 +9,9 @@ namespace LiveLocalCaptions.Views;
 
 public partial class HistoryView : Window
 {
-    public HistoryView()
+    public HistoryView(IHistoryService historyService)
     {
         InitializeComponent();
-        IHistoryService historyService = new HistoryService(); 
         DataContext = new HistoryViewModel(historyService);
     }
 }

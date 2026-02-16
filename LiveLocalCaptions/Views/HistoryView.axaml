@@ -15,7 +15,7 @@
             Margin="0 0 0 10"
             TextAlignment="Center"/>
         <ScrollViewer Width="490" Height="260">
-            <ItemsControl>
+            <ItemsControl ItemsSource="{Binding Transcriptions}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -23,7 +23,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}"/>
+                        <TextBlock Text="{Binding}" Margin="0 0 0 20"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -36,7 +36,7 @@ public class TranscriptionProvider
         bufferedWaveProvider.BufferLength = segmentSize * 2;
         if (!File.Exists(modelName))
         {
-            DownloadModel();
+            _ = DownloadModel();
         }
         else
         {
@@ -47,7 +47,7 @@ public class TranscriptionProvider
         }
     }
 
-    private async void DownloadModel()
+    private async Task DownloadModel()
     {
         using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.BaseEn);
         using var fileWriter = File.OpenWrite(modelName);

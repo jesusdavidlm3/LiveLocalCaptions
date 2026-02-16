@@ -13,9 +13,9 @@ public class ShowHistoryDialogService
         _owner = owner;
     }
 
-    public void ShowDialog()
+    public void ShowDialog(IHistoryService historyService)
     {
-        var historyWindow = new HistoryView();
+        var historyWindow = new HistoryView(historyService);
         historyWindow.ShowDialog(_owner);
     }
 }

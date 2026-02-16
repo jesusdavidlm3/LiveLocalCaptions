@@ -75,6 +75,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void OpenHistoryWindow()
     {
-        _showHistoryDialogService.ShowDialog();
+        _showHistoryDialogService.ShowDialog(_historyService);
     }
 }

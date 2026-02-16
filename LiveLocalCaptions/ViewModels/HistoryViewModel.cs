@@ -5,13 +5,10 @@ namespace LiveLocalCaptions.ViewModels;
 
 public class HistoryViewModel : ViewModelBase
 {
-    
-    IHistoryService _historyService;
-    ObservableCollection<string> transcriptions;
-    
+    public ObservableCollection<string> Transcriptions { get; }
+
     public HistoryViewModel(IHistoryService historyService)
     {
-        _historyService = historyService;
-        transcriptions = historyService.Transcriptions;
+        Transcriptions = historyService.Transcriptions;
     }
 }
