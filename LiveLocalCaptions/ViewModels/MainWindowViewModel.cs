@@ -1,13 +1,17 @@
 ﻿using System.Threading;
 using Avalonia.Controls;
 using LiveLocalCaptions.Classes;
-using EchoSharp.NAudio;
+// using EchoSharp.NAudio;
+using LiveLocalCaptions.Interfaces;
+using LiveLocalCaptions.Services;
 using LiveLocalCaptions.Views;
 
 namespace LiveLocalCaptions.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly IHistoryService _historyService;
+    private readonly ShowHistoryDialogService _showHistoryDialogService;
     public string CurrentText
     {
         get => _CurrentText;
@@ -39,8 +43,11 @@ public partial class MainWindowViewModel : ViewModelBase
     public RelayCommand StartCommand { get; }
     public RelayCommand HistoryWindowCommand { get; }
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IHistoryService historyService, ShowHistoryDialogService showHistoryDialogService)
     {
+        _historyService = historyService;
+        _showHistoryDialogService = showHistoryDialogService;
+        
         StartCommand = new RelayCommand(
             execute: _ => Start(),
             canExecute: _ => true
@@ -57,7 +64,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
-            var transcriptionProvider = new TranscriptionProvider();
+            var transcriptionProvider = new TranscriptionProvider(_historyService);
             transcriptionProvider.Transcript(newText => CurrentText = newText);
         }
         else
@@ -68,7 +75,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void OpenHistoryWindow()
     {
-        var window = new HistoryView();
-        window.Show();
+        _showHistoryDialogService.ShowDialog();
     }
 }

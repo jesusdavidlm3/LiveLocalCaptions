@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveLocalCaptions", "LiveLocalCaptions\LiveLocalCaptions.csproj", "{D89822E8-1E99-4B91-A18F-F4C67D65E180}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{1E7CC7E2-5D9D-4F6E-840D-883A643C510F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveLocalCaptions", "LiveLocalCaptions\LiveLocalCaptions.csproj", "{14AB46E5-75EE-4AC9-81DF-C9AF878AB76C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D89822E8-1E99-4B91-A18F-F4C67D65E180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D89822E8-1E99-4B91-A18F-F4C67D65E180}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D89822E8-1E99-4B91-A18F-F4C67D65E180}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D89822E8-1E99-4B91-A18F-F4C67D65E180}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E7CC7E2-5D9D-4F6E-840D-883A643C510F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E7CC7E2-5D9D-4F6E-840D-883A643C510F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E7CC7E2-5D9D-4F6E-840D-883A643C510F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E7CC7E2-5D9D-4F6E-840D-883A643C510F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14AB46E5-75EE-4AC9-81DF-C9AF878AB76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AB46E5-75EE-4AC9-81DF-C9AF878AB76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AB46E5-75EE-4AC9-81DF-C9AF878AB76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AB46E5-75EE-4AC9-81DF-C9AF878AB76C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

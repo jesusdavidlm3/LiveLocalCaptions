@@ -1,10 +1,12 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:LiveLocalCaptions.ViewModels"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="350" CanResize="False"
         Width="550" Height="350"
         x:Class="LiveLocalCaptions.Views.HistoryView"
+        x:DataType="vm:HistoryViewModel"
         Title="Transcription History">
     <StackPanel Orientation="Vertical" Margin="30 20 30 20">
         <TextBlock
@@ -13,68 +15,18 @@
             Margin="0 0 0 10"
             TextAlignment="Center"/>
         <ScrollViewer Width="490" Height="260">
-            <StackPanel>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-                <TextBlock
-                    Text="Texto de pruebas"/>
-            </StackPanel>
+            <ItemsControl>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </StackPanel>
 </Window>

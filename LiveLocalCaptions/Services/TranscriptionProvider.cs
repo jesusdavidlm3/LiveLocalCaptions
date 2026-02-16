@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using LiveLocalCaptions.Interfaces;
 using Whisper.net;
 using Whisper.net.Ggml;
 using NAudio.Wave;
@@ -14,6 +15,7 @@ namespace LiveLocalCaptions;
 public class TranscriptionProvider
 {
     private string modelName = "ggml-base.bin";
+    private readonly IHistoryService _history;
     
     //Configuracion de la captura de audio
     private MemoryStream bufferStream = new MemoryStream();
@@ -26,8 +28,9 @@ public class TranscriptionProvider
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
 
-    public TranscriptionProvider()
+    public TranscriptionProvider(IHistoryService history)
     {
+        _history = history;
         segmentSize = bytesPerSecond * segmentDurationSeconds;
         bufferedWaveProvider = new BufferedWaveProvider(sourceFormat);
         bufferedWaveProvider.BufferLength = segmentSize * 2;
@@ -108,10 +111,11 @@ public class TranscriptionProvider
                     await foreach (var result in processor.ProcessAsync(samples.ToArray())) 
                     {
                         Dispatcher.UIThread.Post(() => currentDialog(result.Text));
+                        _history.Add(result.Text);
                     }            
                 }catch(Exception ex)
                 {
-                    Console.WriteLine($"No hay audio para Capturar");
+                    Dispatcher.UIThread.Post(() => currentDialog("Theres no audio to transcribe"));
                 }
             }
         };
