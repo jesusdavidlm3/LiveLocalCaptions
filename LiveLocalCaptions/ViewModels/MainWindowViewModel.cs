@@ -11,8 +11,9 @@ namespace LiveLocalCaptions.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public IHistoryService HistoryService { get;  }
+    public IHistoryService HistoryService { get; }
     private readonly ShowHistoryDialogService _showHistoryDialogService;
+    private readonly TranscriptionProvider _transcriptionProvider;
     public string CurrentText
     {
         get => _CurrentText;
@@ -49,6 +50,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         HistoryService = historyService;
         _showHistoryDialogService = showHistoryDialogService;
+        _transcriptionProvider = new TranscriptionProvider(HistoryService);
         
         StartCommand = new RelayCommand(
             execute: _ => Start(),
@@ -70,12 +72,12 @@ public partial class MainWindowViewModel : ViewModelBase
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
-            var transcriptionProvider = new TranscriptionProvider(HistoryService);
-            transcriptionProvider.Transcript(newText => CurrentText = newText);
+            _transcriptionProvider.Transcript(newText => CurrentText = newText);
         }
         else
         {
             StatusButton = "Start";
+            _transcriptionProvider.StopTranscription();
         }
     }
 

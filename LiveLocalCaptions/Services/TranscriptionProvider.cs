@@ -18,15 +18,14 @@ public class TranscriptionProvider
     private readonly IHistoryService _history;
     
     //Configuracion de la captura de audio
-    private MemoryStream bufferStream = new MemoryStream();
     private int bytesPerSecond = 48000 * 2 * 2;     //samples por segundo, profundidad en bytes, canales
     private int segmentDurationSeconds = 3;
     private int segmentSize;
     private WaveFormat sourceFormat = new WaveFormat(48000, 16, 2 );
-    private WaveFormat targetFormat = new WaveFormat(16000, 16, 1);
     private BufferedWaveProvider bufferedWaveProvider;
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
+    private WasapiLoopbackCapture capture;
 
     public TranscriptionProvider(IHistoryService history)
     {
@@ -44,12 +43,12 @@ public class TranscriptionProvider
             processor = whisperFactory.CreateBuilder()
                 .WithLanguage("en")
                 .Build();
-        }
+        } 
     }
 
     private async Task DownloadModel()
     {
-        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.BaseEn);
+        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.TinyEn);
         using var fileWriter = File.OpenWrite(modelName);
         await modelStream.CopyToAsync(fileWriter);
         whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
@@ -60,9 +59,8 @@ public class TranscriptionProvider
 
     public void Transcript(Action<string> currentDialog)
     {
-        var capture = new WasapiLoopbackCapture();
+        capture = new WasapiLoopbackCapture();
         capture.WaveFormat = sourceFormat;
-        
         capture.DataAvailable += async (s, e) =>
         {
             if (bufferedWaveProvider.BufferedBytes < segmentSize)
@@ -120,5 +118,12 @@ public class TranscriptionProvider
             }
         };
         capture.StartRecording();
+    }
+
+    public void StopTranscription()
+    {
+        capture.StopRecording();
+        capture.Dispose();
+        bufferedWaveProvider.ClearBuffer();
     }
 }
