@@ -43,7 +43,7 @@ public class TranscriptionProvider
             {
                 whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
                 processor = whisperFactory.CreateBuilder()
-                    .WithLanguage("en")
+                    .WithLanguage("auto")
                     .Build();
             }
             catch (Exception e)
@@ -55,14 +55,14 @@ public class TranscriptionProvider
 
     private async Task DownloadModel()
     {
-        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.TinyEn);
+        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.Tiny);
         using (var fileWriter = File.OpenWrite(modelName))
         {
             await modelStream.CopyToAsync(fileWriter);
         }
         whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
         processor = whisperFactory.CreateBuilder()
-            .WithLanguage("en")
+            .WithLanguage("auto")
             .Build();
     }
 
