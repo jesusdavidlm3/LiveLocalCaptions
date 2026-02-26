@@ -12,21 +12,7 @@ namespace LiveLocalCaptions.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     public IHistoryService HistoryService { get; }
-    private readonly ShowHistoryDialogService _showHistoryDialogService;
     private readonly TranscriptionProvider _transcriptionProvider;
-    public string CurrentText
-    {
-        get => _CurrentText;
-        set
-        {
-            if (_CurrentText != value)
-            {
-                _CurrentText = value;                
-                OnPropertyChanged();
-            }
-        }
-    } 
-    private string _CurrentText { get; set; } = "Live Captions will appear here";
 
     public string StatusButton
     {
@@ -43,36 +29,30 @@ public partial class MainWindowViewModel : ViewModelBase
     private string _StatusButton { get; set; } = "Start";
     
     public RelayCommand StartCommand { get; }
-    public RelayCommand HistoryWindowCommand { get; }
     public RelayCommand ClearHistoryCommand { get; }
 
-    public MainWindowViewModel(IHistoryService historyService, ShowHistoryDialogService showHistoryDialogService)
+    public MainWindowViewModel(IHistoryService historyService)
     {
         HistoryService = historyService;
-        _showHistoryDialogService = showHistoryDialogService;
         _transcriptionProvider = new TranscriptionProvider(HistoryService);
         
         StartCommand = new RelayCommand(
             execute: _ => Start(),
             canExecute: _ => true
         );
-
-        HistoryWindowCommand = new RelayCommand(
-            execute: _ => OpenHistoryWindow(),
-            canExecute: _ => true
-        );
+        
         ClearHistoryCommand = new RelayCommand(
             execute: _ => ClearHistory(),
             canExecute: _ => true
         );
     }
-    
-    public void Start()
+
+    private void Start()
     {
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
-            _transcriptionProvider.Transcript(newText => CurrentText = newText);
+            _transcriptionProvider.Transcript();
         }
         else
         {
@@ -81,12 +61,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void OpenHistoryWindow()
-    {
-        _showHistoryDialogService.ShowDialog(HistoryService);
-    }
-
-    public void ClearHistory()
+    private void ClearHistory()
     {
         HistoryService.Clear();
     }

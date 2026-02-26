@@ -6,16 +6,14 @@
         mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="350" CanResize="False" Height="350" Width="550"
         x:Class="LiveLocalCaptions.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
         Title="Live Local Captions"
-        Topmost="True"
-        >
+        Topmost="True">
     
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock Text="Live Local Captions" FontSize="30" TextAlignment="Center"/>
         <TextBlock Text="By Jesus Lozano" FontSize="10" TextAlignment="Center"/>
         
-        <ScrollViewer Width="490" Height="240">
+        <ScrollViewer Width="490" Height="240" Name="ScrollViewer">
             <ItemsControl ItemsSource="{Binding HistoryService.Transcriptions}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

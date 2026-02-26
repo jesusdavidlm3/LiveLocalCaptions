@@ -57,7 +57,7 @@ public class TranscriptionProvider
             .Build();
     }
 
-    public void Transcript(Action<string> currentDialog)
+    public void Transcript()
     {
         capture = new WasapiLoopbackCapture();
         capture.WaveFormat = sourceFormat;
@@ -108,12 +108,11 @@ public class TranscriptionProvider
                 {
                     await foreach (var result in processor.ProcessAsync(samples.ToArray())) 
                     {
-                        Dispatcher.UIThread.Post(() => currentDialog(result.Text));
                         _history.Add(result.Text);
                     }            
                 }catch(Exception ex)
                 {
-                    Dispatcher.UIThread.Post(() => currentDialog("Theres no audio to transcribe"));
+                    _history.Add("Theres no audio to transcribe");
                 }
             }
         };
