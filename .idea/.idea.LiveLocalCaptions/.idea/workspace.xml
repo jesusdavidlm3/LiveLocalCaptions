@@ -9,17 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fa3de60-b383-4142-b2c8-c9cfe637c656" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/LiveLocalCaptions/TranscriptionProvider.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LiveLocalCaptions/Views/HistoryView.axaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LiveLocalCaptions/Views/HistoryView.axaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.LiveLocalCaptions/.idea/avalonia.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LiveLocalCaptions/.idea/avalonia.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LiveLocalCaptions.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/LiveLocalCaptions.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LiveLocalCaptions/LiveLocalCaptions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LiveLocalCaptions/LiveLocalCaptions.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LiveLocalCaptions/ViewModels/MainWindowViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LiveLocalCaptions/ViewModels/MainWindowViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LiveLocalCaptions/Views/MainWindow.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/LiveLocalCaptions/Views/MainWindow.axaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LiveLocalCaptions/Views/MainWindow.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LiveLocalCaptions/Views/MainWindow.axaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/test/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LiveLocalCaptions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LiveLocalCaptions/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,28 +66,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.LiveLocalCaptions.executor": "Run",
-    ".NET Project.test.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Publish to folder.Publish test to folder.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "XThreadsFramesViewSplitterKey": "0.4100295",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.LiveLocalCaptions.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.test.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Publish to folder.Publish test to folder.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.41492537&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Project.LiveLocalCaptions">
     <configuration name="Publish test to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" self_contained="true" target_folder="$PROJECT_DIR$/test/bin/Release/net10.0/win-x64/publish" target_framework="net10.0" uuid_high="2196850493297086318" uuid_low="-8931332701634670321">
@@ -177,6 +167,8 @@
       <workItem from="1770042531160" duration="609000" />
       <workItem from="1770053814403" duration="5808000" />
       <workItem from="1770836458741" duration="24319000" />
+      <workItem from="1771527302197" duration="49000" />
+      <workItem from="1772111125705" duration="33000" />
     </task>
     <servers />
   </component>

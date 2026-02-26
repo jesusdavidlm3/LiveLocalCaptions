@@ -14,6 +14,11 @@ public class HistoryService : IHistoryService
         // }
     }
 
+    public void Clear()
+    {
+        Transcriptions.Clear();
+    }
+
     public HistoryService()
     {
         Transcriptions = new ObservableCollection<string>();

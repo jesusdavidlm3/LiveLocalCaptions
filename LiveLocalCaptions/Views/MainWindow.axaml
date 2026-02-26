@@ -3,26 +3,32 @@
         xmlns:vm="using:LiveLocalCaptions.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200" CanResize="False" Height="200" Width="400"
+        mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="350" CanResize="False" Height="350" Width="550"
         x:Class="LiveLocalCaptions.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Live Local Captions"
         Topmost="True"
         >
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock
-                Text="{Binding CurrentText}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Margin="60"
-                FontFamily="Berlin Sans FB Demi"/>
+        <TextBlock Text="Live Local Captions" FontSize="30" TextAlignment="Center"/>
+        <TextBlock Text="By Jesus Lozano" FontSize="10" TextAlignment="Center"/>
+        
+        <ScrollViewer Width="490" Height="240">
+            <ItemsControl ItemsSource="{Binding HistoryService.Transcriptions}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Margin="0 0 0 20"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <WrapPanel ItemsAlignment="Center" ItemSpacing="30">
             <Button
                 HorizontalAlignment="Center"
@@ -30,8 +36,9 @@
                 Command="{Binding StartCommand}"/>
             <Button
                 HorizontalAlignment="Center"
-                Content="History"
-                Command="{Binding HistoryWindowCommand}"/>
+                Content="Clear"
+                Command="{Binding ClearHistoryCommand}"/>
+            
         </WrapPanel>
     </StackPanel>
 </Window>

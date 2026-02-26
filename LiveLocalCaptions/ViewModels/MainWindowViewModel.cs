@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.ObjectModel;
+using System.Threading;
 using Avalonia.Controls;
 using LiveLocalCaptions.Classes;
 // using EchoSharp.NAudio;
@@ -10,7 +11,7 @@ namespace LiveLocalCaptions.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly IHistoryService _historyService;
+    public IHistoryService HistoryService { get;  }
     private readonly ShowHistoryDialogService _showHistoryDialogService;
     public string CurrentText
     {
@@ -42,10 +43,11 @@ public partial class MainWindowViewModel : ViewModelBase
     
     public RelayCommand StartCommand { get; }
     public RelayCommand HistoryWindowCommand { get; }
+    public RelayCommand ClearHistoryCommand { get; }
 
     public MainWindowViewModel(IHistoryService historyService, ShowHistoryDialogService showHistoryDialogService)
     {
-        _historyService = historyService;
+        HistoryService = historyService;
         _showHistoryDialogService = showHistoryDialogService;
         
         StartCommand = new RelayCommand(
@@ -57,6 +59,10 @@ public partial class MainWindowViewModel : ViewModelBase
             execute: _ => OpenHistoryWindow(),
             canExecute: _ => true
         );
+        ClearHistoryCommand = new RelayCommand(
+            execute: _ => ClearHistory(),
+            canExecute: _ => true
+        );
     }
     
     public void Start()
@@ -64,7 +70,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (StatusButton == "Start")
         {
             StatusButton = "Stop";
-            var transcriptionProvider = new TranscriptionProvider(_historyService);
+            var transcriptionProvider = new TranscriptionProvider(HistoryService);
             transcriptionProvider.Transcript(newText => CurrentText = newText);
         }
         else
@@ -75,6 +81,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void OpenHistoryWindow()
     {
-        _showHistoryDialogService.ShowDialog(_historyService);
+        _showHistoryDialogService.ShowDialog(HistoryService);
+    }
+
+    public void ClearHistory()
+    {
+        HistoryService.Clear();
     }
 }
