@@ -39,18 +39,27 @@ public class TranscriptionProvider
         }
         else
         {
-            whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
-            processor = whisperFactory.CreateBuilder()
-                .WithLanguage("en")
-                .Build();
+            try
+            {
+                whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
+                processor = whisperFactory.CreateBuilder()
+                    .WithLanguage("en")
+                    .Build();
+            }
+            catch (Exception e)
+            {
+                _ = DownloadModel();
+            }
         } 
     }
 
     private async Task DownloadModel()
     {
         using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.TinyEn);
-        using var fileWriter = File.OpenWrite(modelName);
-        await modelStream.CopyToAsync(fileWriter);
+        using (var fileWriter = File.OpenWrite(modelName))
+        {
+            await modelStream.CopyToAsync(fileWriter);
+        }
         whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
         processor = whisperFactory.CreateBuilder()
             .WithLanguage("en")
@@ -112,7 +121,14 @@ public class TranscriptionProvider
                     }            
                 }catch(Exception ex)
                 {
-                    _history.Add("Theres no audio to transcribe");
+                    if (processor == null)
+                    {
+                        _history.Add("Downloading transcription model, please Wait");
+                    }
+                    else
+                    {
+                        _history.Add("Theres no audio to transcribe");
+                    }
                 }
             }
         };
