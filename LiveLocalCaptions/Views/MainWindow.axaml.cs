@@ -3,10 +3,11 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using LiveLocalCaptions.Services;
 using LiveLocalCaptions.ViewModels;
+using SukiUI.Controls;
 
 namespace LiveLocalCaptions.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : SukiWindow
 {
     public MainWindow()
     {
