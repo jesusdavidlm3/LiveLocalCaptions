@@ -1,33 +1,37 @@
-<Window xmlns="https://github.com/avaloniaui"
+<sukiUi:SukiWindow
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:LiveLocalCaptions.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="350" CanResize="False" Height="350" Width="550"
+        xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450" CanResize="False" Height="450" Width="600"
         x:Class="LiveLocalCaptions.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Live Local Captions"
         Topmost="True">
     
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock Text="Live Local Captions" FontSize="30" TextAlignment="Center"/>
-        <TextBlock Text="By Jesus Lozano" FontSize="10" TextAlignment="Center"/>
+        <TextBlock Text="Live Local Captions" FontSize="35" TextAlignment="Center"/>
+        <TextBlock Text="By Jesus Lozano" FontSize="13" TextAlignment="Center" Margin="0 0 0 15"/>
         
-        <ScrollViewer Width="490" Height="240" Name="ScrollViewer">
-            <ItemsControl ItemsSource="{Binding HistoryService.Transcriptions}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Margin="0 0 0 20"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-        <WrapPanel ItemsAlignment="Center" ItemSpacing="30">
+        <sukiUi:GlassCard Width="530" Height="240">
+            <ScrollViewer Width="520" Height="240" Name="ScrollViewer">
+                <ItemsControl ItemsSource="{Binding HistoryService.Transcriptions}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="0 0 0 20"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </sukiUi:GlassCard>
+        <WrapPanel ItemsAlignment="Center" ItemSpacing="30" Margin="0 15 0 0">
             <Button
                 HorizontalAlignment="Center"
                 Content="{Binding StatusButton}"
@@ -39,4 +43,4 @@
             
         </WrapPanel>
     </StackPanel>
-</Window>
+</sukiUi:SukiWindow>
