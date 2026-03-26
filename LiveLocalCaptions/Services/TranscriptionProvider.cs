@@ -103,7 +103,7 @@ public class TranscriptionProvider
                     int r = bufferedWaveProvider.Read(chunck, toRead, segmentSize - toRead);
                     if (r == 0)
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000);
                         continue;
                     }
                     toRead += r;
