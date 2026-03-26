@@ -13,7 +13,7 @@ public partial class MainWindow : SukiWindow
     {
         InitializeComponent();
         var history = new HistoryService();
-        var showHistoryDialogService = new ShowHistoryDialogService(this);
+        var showLoadingModelDialogService = new ShowLoadingModelDialogService(this);
         DataContext = new MainWindowViewModel(history);
         ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
     }

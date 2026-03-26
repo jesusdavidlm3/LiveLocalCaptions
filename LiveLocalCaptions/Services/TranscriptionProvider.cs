@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using LiveLocalCaptions.Interfaces;
+using NAudio.CoreAudioApi;
 using Whisper.net;
 using Whisper.net.Ggml;
 using NAudio.Wave;
@@ -14,8 +15,9 @@ namespace LiveLocalCaptions;
 
 public class TranscriptionProvider
 {
-    private string modelName = "ggml-base.bin";
     private readonly IHistoryService _history;
+    private GgmlType Model = GgmlType.Base;
+    private string ModelName { get; set; }
     
     //Configuracion de la captura de audio
     private int bytesPerSecond = 48000 * 2 * 2;     //samples por segundo, profundidad en bytes, canales
@@ -25,45 +27,49 @@ public class TranscriptionProvider
     private BufferedWaveProvider bufferedWaveProvider;
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
-    private WasapiLoopbackCapture capture;
+    private WasapiLoopbackCapture capture = new WasapiLoopbackCapture();
 
     public TranscriptionProvider(IHistoryService history)
     {
+        ModelName = $"model-{Model}.bin";
         _history = history;
         segmentSize = bytesPerSecond * segmentDurationSeconds;
         bufferedWaveProvider = new BufferedWaveProvider(sourceFormat);
         bufferedWaveProvider.BufferLength = segmentSize * 2;
-        if (!File.Exists(modelName))
-        {
-            _ = DownloadModel();
-        }
-        else
-        {
-            try
-            {
-                whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
-                processor = whisperFactory.CreateBuilder()
-                    .WithLanguage("auto")
-                    .Build();
-            }
-            catch (Exception e)
-            {
-                _ = DownloadModel();
-            }
-        } 
     }
 
-    private async Task DownloadModel()
+    public bool VerifyModel()
     {
-        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.Tiny);
-        using (var fileWriter = File.OpenWrite(modelName))
+        return File.Exists(ModelName);
+    }
+
+    private async Task Prepare()
+    {
+        await DownloadModel();
+        BuildWhisper();
+    }
+
+    public async Task DownloadModel()
+    {
+        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(Model);
+        using (var fileWriter = File.OpenWrite(ModelName))
         {
             await modelStream.CopyToAsync(fileWriter);
         }
-        whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
+    }
+
+    public void BuildWhisper()
+    {
+        whisperFactory = WhisperFactory.FromPath(ModelName);
         processor = whisperFactory.CreateBuilder()
             .WithLanguage("auto")
             .Build();
+    }
+    
+    public async Task ChangeSettings(GgmlType newModel)
+    {
+        Model = newModel;
+        ModelName = $"model-{Model}.bin";
     }
 
     public void Transcript()

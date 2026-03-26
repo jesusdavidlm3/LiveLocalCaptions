@@ -40,7 +40,10 @@
                 HorizontalAlignment="Center"
                 Content="Clear"
                 Command="{Binding ClearHistoryCommand}"/>
-            
+            <ComboBox 
+                ItemsSource="{Binding ModelsNames}"
+                SelectedValue="{Binding SelectedModel}"
+                IsEnabled="{Binding Working}"/>
         </WrapPanel>
     </StackPanel>
 </sukiUi:SukiWindow>

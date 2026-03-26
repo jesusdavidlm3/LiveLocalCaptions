@@ -1,0 +1,26 @@
+<sukiUi:SukiWindow 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:LiveLocalCaptions.ViewModels"
+    xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="350"
+    Width="500" Height="350"
+    x:Class="LiveLocalCaptions.Views.LoadingModelView"
+    x:DataType="vm:LoadingModelViewModel"
+    Title=""
+    CanFullScreen="False"
+    CanMaximize="False"
+    CanResize="False"
+    CanMinimize="False"
+    CanMove="False">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock
+            Text="Loading transcription model" HorizontalAlignment="Center"
+            FontSize="20"/>
+        <TextBlock
+            Text="Please wait..." HorizontalAlignment="Center"/>
+        <sukiUi:WaveProgress/>
+    </StackPanel>
+</sukiUi:SukiWindow>
