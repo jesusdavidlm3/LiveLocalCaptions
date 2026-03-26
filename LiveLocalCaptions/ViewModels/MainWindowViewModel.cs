@@ -116,11 +116,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _transcriptionProvider.ChangeSettings(ModelsDictionary[_SelectedModel]);
         var isModelLoaded = _transcriptionProvider.VerifyModel();
-        if (isModelLoaded)
-        {
-            _transcriptionProvider.BuildWhisper();
-        }
-        else
+        if (!isModelLoaded)
         {
             ShowLoadingModelDialogService.ShowDialog(_transcriptionProvider);
         }

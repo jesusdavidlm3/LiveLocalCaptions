@@ -40,13 +40,20 @@ public class TranscriptionProvider
 
     public bool VerifyModel()
     {
-        return File.Exists(ModelName);
-    }
-
-    private async Task Prepare()
-    {
-        await DownloadModel();
-        BuildWhisper();
+        var fileExists = File.Exists(ModelName);
+        if (fileExists)
+        {
+            try
+            {
+                BuildWhisper();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        return false;
     }
 
     public async Task DownloadModel()
@@ -74,6 +81,10 @@ public class TranscriptionProvider
 
     public void Transcript()
     {
+        if (processor == null)
+        {
+            BuildWhisper();
+        }
         capture = new WasapiLoopbackCapture();
         capture.WaveFormat = sourceFormat;
         capture.DataAvailable += async (s, e) =>
@@ -127,14 +138,8 @@ public class TranscriptionProvider
                     }            
                 }catch(Exception ex)
                 {
-                    if (processor == null)
-                    {
-                        _history.Add("Downloading transcription model, please Wait");
-                    }
-                    else
-                    {
-                        _history.Add("Theres no audio to transcribe");
-                    }
+                    Console.WriteLine(ex.Message);
+                    _history.Add("Theres an error or no audio to transcribe");
                 }
             }
         };

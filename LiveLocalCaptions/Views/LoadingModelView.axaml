@@ -14,13 +14,16 @@
     CanMaximize="False"
     CanResize="False"
     CanMinimize="False"
-    CanMove="False">
+    CanMove="False"
+    WindowStartupLocation="CenterOwner"
+    Topmost="True"
+    IsTitleBarVisible="False">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock
             Text="Loading transcription model" HorizontalAlignment="Center"
             FontSize="20"/>
         <TextBlock
             Text="Please wait..." HorizontalAlignment="Center"/>
-        <sukiUi:WaveProgress/>
+        <sukiUi:WaveProgress IsTextVisible="False" Name="Progress"/>
     </StackPanel>
 </sukiUi:SukiWindow>

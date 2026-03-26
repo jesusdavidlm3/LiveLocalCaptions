@@ -9,7 +9,8 @@
         x:Class="LiveLocalCaptions.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Live Local Captions"
-        Topmost="True">
+        Topmost="True"
+        Loaded="Control_OnLoaded">
     
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock Text="Live Local Captions" FontSize="35" TextAlignment="Center"/>
