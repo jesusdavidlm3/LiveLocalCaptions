@@ -1,4 +1,5 @@
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -15,20 +16,31 @@ public partial class LoadingModelView : SukiWindow
         InitializeComponent();
         var viewModel = new LoadingModelViewModel(transcriptionProvider, this);
         DataContext = viewModel;
-        // LoadingSecuence();
+        Progress.Value = 0;
+        LoadingSecuence();
     }
     
     public void LoadingSecuence()
     {
-            do
+        Task.Run(async () =>
+        {
+            while (true)
             {
-                Thread.Sleep(2000);
-                Dispatcher.UIThread.Invoke(() => { Progress.Value++; }, DispatcherPriority.Render);
-            }while(Progress.Value < 100);
-            do
-            {
-                Thread.Sleep(2000);
-                Dispatcher.UIThread.Invoke(() => { Progress.Value--; }, DispatcherPriority.Render);
-            }while(Progress.Value > 0);
+                var currentVar = 0;
+                while (currentVar < 100)
+                {
+                    currentVar++;
+                    await Dispatcher.UIThread.InvokeAsync(() => Progress.Value += 1);
+                    await Task.Delay(20);
+                }
+                
+                while (currentVar > 0)
+                {
+                    currentVar--;
+                    await Dispatcher.UIThread.InvokeAsync(() => Progress.Value -= 1);
+                    await Task.Delay(20);
+                }
+            }
+        });
     }
 }
