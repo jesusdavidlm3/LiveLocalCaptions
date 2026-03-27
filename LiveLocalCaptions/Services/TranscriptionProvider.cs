@@ -28,6 +28,7 @@ public class TranscriptionProvider
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
     private WasapiLoopbackCapture capture = new WasapiLoopbackCapture();
+    private string Language { get; set; }= "en";
 
     public TranscriptionProvider(IHistoryService history)
     {
@@ -69,22 +70,24 @@ public class TranscriptionProvider
     {
         whisperFactory = WhisperFactory.FromPath(ModelName);
         processor = whisperFactory.CreateBuilder()
-            .WithLanguage("auto")
+            .WithLanguage(Language)
             .Build();
     }
     
-    public async Task ChangeSettings(GgmlType newModel)
+    public void ChangeModel(GgmlType newModel)
     {
         Model = newModel;
         ModelName = $"model-{Model}.bin";
     }
 
+    public void ChangeLanguage(string language)
+    {
+        Language = language;
+    }
+
     public void Transcript()
     {
-        if (processor == null)
-        {
-            BuildWhisper();
-        }
+        BuildWhisper();
         capture = new WasapiLoopbackCapture();
         capture.WaveFormat = sourceFormat;
         capture.DataAvailable += async (s, e) =>

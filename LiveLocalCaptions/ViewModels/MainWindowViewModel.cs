@@ -16,6 +16,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly TranscriptionProvider _transcriptionProvider;
     private Dictionary<string, GgmlType> ModelsDictionary { get; set; } = new Dictionary<string, GgmlType>();
     public ObservableCollection<string> ModelsNames { get; set; } = new ObservableCollection<string>();
+    private Dictionary<string, string> LanguagesDictionary { get; set; } = new Dictionary<string, string>();
+    public ObservableCollection<string> LanguagesNames { get; set; } = new ObservableCollection<string>();
 
     public bool Working
     {
@@ -40,6 +42,20 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 _SelectedModel = value;
                 ChangeSettings();
+            }
+        }
+    }
+    private string _SelectedLanguage { get; set; }
+
+    public string SelectedLanguage
+    {
+        get => _SelectedLanguage;
+        set
+        {
+            if (value != _SelectedLanguage)
+            {
+                _SelectedLanguage = value;
+                ChangeLanguage();
             }
         }
     }
@@ -86,9 +102,18 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             ModelsNames.Add(item.Key);
         }
+        
+        LanguagesDictionary.Add("Auto", "auto");
+        LanguagesDictionary.Add("English", "en");
+        LanguagesDictionary.Add("Spanish", "es");
+        foreach (var item in LanguagesDictionary)
+        {
+            LanguagesNames.Add(item.Key);
+        }
 
         Working = true;
-        _SelectedModel = ModelsNames[1];
+        SelectedModel = ModelsNames[1];
+        SelectedLanguage = LanguagesNames[1];
     }
 
     private void Start()
@@ -114,11 +139,16 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void ChangeSettings()
     {
-        _transcriptionProvider.ChangeSettings(ModelsDictionary[_SelectedModel]);
+        _transcriptionProvider.ChangeModel(ModelsDictionary[_SelectedModel]);
         var isModelLoaded = _transcriptionProvider.VerifyModel();
         if (!isModelLoaded)
         {
             ShowLoadingModelDialogService.ShowDialog(_transcriptionProvider);
         }
+    }
+
+    private void ChangeLanguage()
+    {
+        _transcriptionProvider.ChangeLanguage(LanguagesDictionary[_SelectedLanguage]);
     }
 }

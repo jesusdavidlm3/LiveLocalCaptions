@@ -32,19 +32,25 @@
                 </ItemsControl>
             </ScrollViewer>
         </sukiUi:GlassCard>
-        <WrapPanel ItemsAlignment="Center" ItemSpacing="30" Margin="0 15 0 0">
-            <Button
-                HorizontalAlignment="Center"
-                Content="{Binding StatusButton}"
-                Command="{Binding StartCommand}"/>
-            <Button
-                HorizontalAlignment="Center"
-                Content="Clear"
-                Command="{Binding ClearHistoryCommand}"/>
+        <WrapPanel ItemsAlignment="Center" ItemSpacing="5" Margin="0 15 0 0">
             <ComboBox 
                 ItemsSource="{Binding ModelsNames}"
                 SelectedValue="{Binding SelectedModel}"
-                IsEnabled="{Binding Working}"/>
+                IsEnabled="{Binding Working}"
+                Width="200"/>
+            <Button
+                HorizontalAlignment="Center"
+                Content="{Binding StatusButton}"
+                Command="{Binding StartCommand}" Height="33"/>
+            <Button
+                HorizontalAlignment="Center"
+                Content="Clear"
+                Command="{Binding ClearHistoryCommand}" Height="35"/>
+            <ComboBox
+                ItemsSource="{Binding LanguagesNames}"
+                SelectedValue="{Binding SelectedLanguage}"
+                IsEnabled="{Binding Working}"
+                Width="200"/>
         </WrapPanel>
     </StackPanel>
 </sukiUi:SukiWindow>
