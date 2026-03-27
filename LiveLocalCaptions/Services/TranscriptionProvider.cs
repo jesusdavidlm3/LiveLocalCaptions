@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using LiveLocalCaptions.Interfaces;
+using NAudio.CoreAudioApi;
 using Whisper.net;
 using Whisper.net.Ggml;
 using NAudio.Wave;
@@ -14,8 +15,9 @@ namespace LiveLocalCaptions;
 
 public class TranscriptionProvider
 {
-    private string modelName = "ggml-base.bin";
     private readonly IHistoryService _history;
+    private GgmlType Model = GgmlType.Base;
+    private string ModelName { get; set; }
     
     //Configuracion de la captura de audio
     private int bytesPerSecond = 48000 * 2 * 2;     //samples por segundo, profundidad en bytes, canales
@@ -25,49 +27,64 @@ public class TranscriptionProvider
     private BufferedWaveProvider bufferedWaveProvider;
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
-    private WasapiLoopbackCapture capture;
+    private WasapiLoopbackCapture capture = new WasapiLoopbackCapture();
 
     public TranscriptionProvider(IHistoryService history)
     {
+        ModelName = $"model-{Model}.bin";
         _history = history;
         segmentSize = bytesPerSecond * segmentDurationSeconds;
         bufferedWaveProvider = new BufferedWaveProvider(sourceFormat);
         bufferedWaveProvider.BufferLength = segmentSize * 2;
-        if (!File.Exists(modelName))
-        {
-            _ = DownloadModel();
-        }
-        else
+    }
+
+    public bool VerifyModel()
+    {
+        var fileExists = File.Exists(ModelName);
+        if (fileExists)
         {
             try
             {
-                whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
-                processor = whisperFactory.CreateBuilder()
-                    .WithLanguage("auto")
-                    .Build();
+                BuildWhisper();
+                return true;
             }
             catch (Exception e)
             {
-                _ = DownloadModel();
+                return false;
             }
-        } 
+        }
+        return false;
     }
 
-    private async Task DownloadModel()
+    public async Task DownloadModel()
     {
-        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(GgmlType.Tiny);
-        using (var fileWriter = File.OpenWrite(modelName))
+        using var modelStream = await WhisperGgmlDownloader.Default.GetGgmlModelAsync(Model);
+        using (var fileWriter = File.OpenWrite(ModelName))
         {
             await modelStream.CopyToAsync(fileWriter);
         }
-        whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
+    }
+
+    public void BuildWhisper()
+    {
+        whisperFactory = WhisperFactory.FromPath(ModelName);
         processor = whisperFactory.CreateBuilder()
             .WithLanguage("auto")
             .Build();
     }
+    
+    public async Task ChangeSettings(GgmlType newModel)
+    {
+        Model = newModel;
+        ModelName = $"model-{Model}.bin";
+    }
 
     public void Transcript()
     {
+        if (processor == null)
+        {
+            BuildWhisper();
+        }
         capture = new WasapiLoopbackCapture();
         capture.WaveFormat = sourceFormat;
         capture.DataAvailable += async (s, e) =>
@@ -86,7 +103,7 @@ public class TranscriptionProvider
                     int r = bufferedWaveProvider.Read(chunck, toRead, segmentSize - toRead);
                     if (r == 0)
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000);
                         continue;
                     }
                     toRead += r;
@@ -121,14 +138,8 @@ public class TranscriptionProvider
                     }            
                 }catch(Exception ex)
                 {
-                    if (processor == null)
-                    {
-                        _history.Add("Downloading transcription model, please Wait");
-                    }
-                    else
-                    {
-                        _history.Add("Theres no audio to transcribe");
-                    }
+                    Console.WriteLine(ex.Message);
+                    _history.Add("Theres an error or no audio to transcribe");
                 }
             }
         };

@@ -9,12 +9,14 @@ namespace LiveLocalCaptions.Views;
 
 public partial class MainWindow : SukiWindow
 {
+    private MainWindowViewModel viewModel {get; set;}
     public MainWindow()
     {
         InitializeComponent();
         var history = new HistoryService();
-        var showHistoryDialogService = new ShowHistoryDialogService(this);
-        DataContext = new MainWindowViewModel(history);
+        var showLoadingModelDialogService = new ShowLoadingModelDialogService(this);
+        viewModel = new MainWindowViewModel(history);
+        DataContext = viewModel;
         ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
     }
 
@@ -26,5 +28,10 @@ public partial class MainWindow : SukiWindow
         {
             Dispatcher.UIThread.Post(() => { ScrollViewer.ScrollToEnd(); }, DispatcherPriority.Background);
         }
+    }
+
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        viewModel.SelectedModel = viewModel.ModelsNames[1];
     }
 }
