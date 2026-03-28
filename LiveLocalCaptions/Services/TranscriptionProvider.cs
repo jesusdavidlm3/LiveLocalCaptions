@@ -70,19 +70,40 @@ public class TranscriptionProvider
     {
         whisperFactory = WhisperFactory.FromPath(ModelName);
         processor = whisperFactory.CreateBuilder()
+            .WithNoContext()
+            .WithPrintTimestamps(false)
             .WithLanguage(Language)
             .Build();
     }
-    
-    public void ChangeModel(GgmlType newModel)
+
+    public void ChangeSettings(string language, GgmlType newModel)
     {
         Model = newModel;
-        ModelName = $"model-{Model}.bin";
-    }
-
-    public void ChangeLanguage(string language)
-    {
         Language = language;
+        if (language == "en" && (newModel != GgmlType.LargeV3 || newModel != GgmlType.LargeV3Turbo))
+        {
+            switch (newModel)
+            {
+                case GgmlType.Tiny:
+                    Model = GgmlType.TinyEn;
+                    break;
+                case GgmlType.Base:
+                    Model = GgmlType.BaseEn;
+                    break;
+                case GgmlType.Small:
+                    Model = GgmlType.SmallEn;
+                    break;
+                case GgmlType.Medium:
+                    Model = GgmlType.MediumEn;
+                    break;
+            }
+            ModelName = $"model-{Model}.bin";
+            
+        }
+        else
+        {
+            ModelName = $"model-{Model}.bin";
+        }
     }
 
     public void Transcript()

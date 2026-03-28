@@ -32,6 +32,6 @@ public partial class MainWindow : SukiWindow
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        viewModel.SelectedModel = viewModel.ModelsNames[1];
+        viewModel.ChangeSettings();
     }
 }

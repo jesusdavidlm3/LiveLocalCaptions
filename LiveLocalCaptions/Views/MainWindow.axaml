@@ -35,7 +35,7 @@
         <WrapPanel ItemsAlignment="Center" ItemSpacing="5" Margin="0 15 0 0">
             <ComboBox 
                 ItemsSource="{Binding ModelsNames}"
-                SelectedValue="{Binding SelectedModel}"
+                SelectedValue="{Binding SelectedModel, Mode=TwoWay}"
                 IsEnabled="{Binding Working}"
                 Width="200"/>
             <Button
@@ -48,7 +48,7 @@
                 Command="{Binding ClearHistoryCommand}" Height="35"/>
             <ComboBox
                 ItemsSource="{Binding LanguagesNames}"
-                SelectedValue="{Binding SelectedLanguage}"
+                SelectedValue="{Binding SelectedLanguage, Mode=TwoWay}"
                 IsEnabled="{Binding Working}"
                 Width="200"/>
         </WrapPanel>

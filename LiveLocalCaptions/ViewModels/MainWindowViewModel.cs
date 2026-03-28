@@ -33,12 +33,12 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private bool _working { get; set; } = false;
     private string _SelectedModel { get; set; }
-    public string SelectedModel
+    public string? SelectedModel
     {
         get => _SelectedModel;
         set
         {
-            if (value != _SelectedModel)
+            if (value != null && value != _SelectedModel)
             {
                 _SelectedModel = value;
                 ChangeSettings();
@@ -47,15 +47,15 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private string _SelectedLanguage { get; set; }
 
-    public string SelectedLanguage
+    public string? SelectedLanguage
     {
         get => _SelectedLanguage;
         set
         {
-            if (value != _SelectedLanguage)
+            if (value != null && value != _SelectedLanguage)
             {
                 _SelectedLanguage = value;
-                ChangeLanguage();
+                ChangeSettings();
             }
         }
     }
@@ -112,8 +112,8 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
         Working = true;
-        SelectedModel = ModelsNames[1];
-        SelectedLanguage = LanguagesNames[1];
+        _SelectedModel = ModelsNames[1];
+        _SelectedLanguage = LanguagesNames[1];
     }
 
     private void Start()
@@ -137,18 +137,13 @@ public partial class MainWindowViewModel : ViewModelBase
         HistoryService.Clear();
     }
 
-    private void ChangeSettings()
+    public void ChangeSettings()
     {
-        _transcriptionProvider.ChangeModel(ModelsDictionary[_SelectedModel]);
+        _transcriptionProvider.ChangeSettings(LanguagesDictionary[_SelectedLanguage], ModelsDictionary[_SelectedModel]);
         var isModelLoaded = _transcriptionProvider.VerifyModel();
         if (!isModelLoaded)
         {
             ShowLoadingModelDialogService.ShowDialog(_transcriptionProvider);
         }
-    }
-
-    private void ChangeLanguage()
-    {
-        _transcriptionProvider.ChangeLanguage(LanguagesDictionary[_SelectedLanguage]);
     }
 }
