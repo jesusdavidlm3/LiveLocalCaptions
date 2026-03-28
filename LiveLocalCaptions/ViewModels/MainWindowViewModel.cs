@@ -41,7 +41,10 @@ public partial class MainWindowViewModel : ViewModelBase
             if (value != null && value != _SelectedModel)
             {
                 _SelectedModel = value;
-                ChangeSettings();
+                if (SelectedLanguage != null)
+                {
+                    ChangeSettings();
+                }
             }
         }
     }
@@ -55,7 +58,10 @@ public partial class MainWindowViewModel : ViewModelBase
             if (value != null && value != _SelectedLanguage)
             {
                 _SelectedLanguage = value;
-                ChangeSettings();
+                if (SelectedModel != null)
+                {
+                    ChangeSettings();
+                }
             }
         }
     }
