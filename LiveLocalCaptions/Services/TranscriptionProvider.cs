@@ -28,6 +28,7 @@ public class TranscriptionProvider
     private WhisperProcessor processor;
     private WhisperFactory whisperFactory;
     private WasapiLoopbackCapture capture = new WasapiLoopbackCapture();
+    private string Language { get; set; }= "en";
 
     public TranscriptionProvider(IHistoryService history)
     {
@@ -69,7 +70,9 @@ public class TranscriptionProvider
     {
         whisperFactory = WhisperFactory.FromPath(ModelName);
         processor = whisperFactory.CreateBuilder()
-            .WithLanguage("auto")
+            .WithNoContext()
+            .WithPrintTimestamps(false)
+            .WithLanguage(Language)
             .Build();
     }
     
@@ -77,6 +80,36 @@ public class TranscriptionProvider
     {
         Model = newModel;
         ModelName = $"model-{Model}.bin";
+    }
+
+    public void ChangeSettings(string language, GgmlType newModel)
+    {
+        Model = newModel;
+        Language = language;
+        if (language == "en" && (newModel != GgmlType.LargeV3 || newModel != GgmlType.LargeV3Turbo))
+        {
+            switch (newModel)
+            {
+                case GgmlType.Tiny:
+                    Model = GgmlType.TinyEn;
+                    break;
+                case GgmlType.Base:
+                    Model = GgmlType.BaseEn;
+                    break;
+                case GgmlType.Small:
+                    Model = GgmlType.SmallEn;
+                    break;
+                case GgmlType.Medium:
+                    Model = GgmlType.MediumEn;
+                    break;
+            }
+            ModelName = $"model-{Model}.bin";
+            
+        }
+        else
+        {
+            ModelName = $"model-{Model}.bin";
+        }
     }
 
     public void Transcript()

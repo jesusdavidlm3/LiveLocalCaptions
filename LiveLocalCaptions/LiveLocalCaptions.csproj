@@ -5,8 +5,9 @@
         <Nullable>enable</Nullable>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Copyright>Copyright (C) 2026 Jesus David Lozano</Copyright>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>

@@ -16,6 +16,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly TranscriptionProvider _transcriptionProvider;
     private Dictionary<string, GgmlType> ModelsDictionary { get; set; } = new Dictionary<string, GgmlType>();
     public ObservableCollection<string> ModelsNames { get; set; } = new ObservableCollection<string>();
+    private Dictionary<string, string> LanguagesDictionary { get; set; } = new Dictionary<string, string>();
+    public ObservableCollection<string> LanguagesNames { get; set; } = new ObservableCollection<string>();
 
     public bool Working
     {
@@ -31,15 +33,35 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     private bool _working { get; set; } = false;
     private string _SelectedModel { get; set; }
-    public string SelectedModel
+    public string? SelectedModel
     {
         get => _SelectedModel;
         set
         {
-            if (value != _SelectedModel)
+            if (value != null && value != _SelectedModel)
             {
                 _SelectedModel = value;
-                ChangeSettings();
+                if (SelectedLanguage != null)
+                {
+                    ChangeSettings();
+                }
+            }
+        }
+    }
+    private string _SelectedLanguage { get; set; }
+
+    public string? SelectedLanguage
+    {
+        get => _SelectedLanguage;
+        set
+        {
+            if (value != null && value != _SelectedLanguage)
+            {
+                _SelectedLanguage = value;
+                if (SelectedModel != null)
+                {
+                    ChangeSettings();
+                }
             }
         }
     }
@@ -86,9 +108,17 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             ModelsNames.Add(item.Key);
         }
+        LanguagesDictionary.Add("Auto", "auto");
+        LanguagesDictionary.Add("English", "en");
+        LanguagesDictionary.Add("Spanish", "es");
+        foreach (var item in LanguagesDictionary)
+        {
+            LanguagesNames.Add(item.Key);
+        }
 
         Working = true;
         _SelectedModel = ModelsNames[1];
+        _SelectedLanguage = LanguagesNames[1];
     }
 
     private void Start()
@@ -111,10 +141,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         HistoryService.Clear();
     }
-
-    private void ChangeSettings()
+    
+    public void ChangeSettings()
     {
-        _transcriptionProvider.ChangeSettings(ModelsDictionary[_SelectedModel]);
+        _transcriptionProvider.ChangeSettings(LanguagesDictionary[_SelectedLanguage], ModelsDictionary[_SelectedModel]);
         var isModelLoaded = _transcriptionProvider.VerifyModel();
         if (!isModelLoaded)
         {
